@@ -204,8 +204,10 @@ abstract public class ArticlePageObject extends MainPageObject
         WebElement image_element = waitForNameOfImage();
         if (Platform.getInstance().isAndroid()) {
             return image_element.getAttribute("text");
-        } else {
+        } else if (Platform.getInstance().isIOS()){
             return image_element.getAttribute("name");
+        } else {
+            return image_element.getText();
         }
     }
 

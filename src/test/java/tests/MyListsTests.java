@@ -70,41 +70,61 @@ public class MyListsTests extends CoreTestCase
     {
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         SearchPageObject.initSearchInput();
-        String article_one = "Java";
-        SearchPageObject.typeSearchLine(article_one);
+        SearchPageObject.typeSearchLine("Java");
         SearchPageObject.clickByArticleWithSubstring("bject-oriented programming language");
+
         ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         ArticlePageObject.waitForTitleElement();
         String article_title = ArticlePageObject.getArticleTitle();
+
         if(Platform.getInstance().isAndroid()){
             ArticlePageObject.addArticleToMyList(name_of_folder);
+        } else if (Platform.getInstance().isIOS()){
+            ArticlePageObject.closeSyncWindow();
         } else {
             ArticlePageObject.addArticlesToMySaved();
         }
-        if(Platform.getInstance().isIOS()){
-            ArticlePageObject.closeSyncWindow();
+        if (Platform.getInstance().isMw()){
+            AuthorizationPageObject Auth = new AuthorizationPageObject(driver);
+            Auth.clickAuthButton();
+            Auth.enterLoginData(login, password);
+            Auth.submitForm();
+
+            ArticlePageObject.waitForTitleElement();
+
+            assertEquals("We are not on the same page after login",
+                    article_title,
+                    ArticlePageObject.getArticleTitle()
+            );
+
+            ArticlePageObject.addArticlesToMySaved();
         }
+        if ((Platform.getInstance().isAndroid()) || (Platform.getInstance().isIOS()))
+        {
         ArticlePageObject.closeArticle();
         SearchPageObject.initSearchInput();
+        }
         if(Platform.getInstance().isIOS()){
             SearchPageObject.clearSearchField();
         }
-        String article_two = "Android (operating system)";
+        String article_two = "Python (programming language)";
+        if (Platform.getInstance().isMw()) {SearchPageObject.initSearchInput();}
         SearchPageObject.typeSearchLine(article_two);
-        SearchPageObject.clickByArticleWithSubstring("Open-source operating system for mobile devices created by Google");
+        SearchPageObject.clickByArticleWithSubstring("General-purpose programming language");
         if(Platform.getInstance().isAndroid()){
             ArticlePageObject.addSecondArticleToMyList(name_of_folder);
         } else {
             ArticlePageObject.addArticlesToMySaved();
         }
-        ArticlePageObject.openImageOfArticle();
+        if((Platform.getInstance().isAndroid()) || Platform.getInstance().isIOS()) {ArticlePageObject.openImageOfArticle();}
         String name_of_image = ArticlePageObject.getNameOfImage();
-        ArticlePageObject.closeImageOfArticle();
+        if((Platform.getInstance().isAndroid()) || Platform.getInstance().isIOS()) {ArticlePageObject.closeImageOfArticle();}
         if(Platform.getInstance().isAndroid()) {
             ArticlePageObject.waitForTitleElement();
         }
         ArticlePageObject.closeArticle();
         NavigationUI NavigationUI = NavigationUIFactory.get(driver);
+        NavigationUI.openNavigation();
         NavigationUI.clickMyLists();
         MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
         if (Platform.getInstance().isAndroid()){
@@ -113,7 +133,7 @@ public class MyListsTests extends CoreTestCase
         MyListsPageObject.swipeByArticleToDelete(article_title);
         MyListsPageObject.waitForArticleToAppearByTitle(article_two);
         MyListsPageObject.openSavedArticle();
-        ArticlePageObject.openImageOfArticle();
+        if((Platform.getInstance().isAndroid()) || Platform.getInstance().isIOS()) {ArticlePageObject.openImageOfArticle();}
         String name_image_locator = ArticlePageObject.getNameOfImage();
         assertEquals(
                 "It's incorrect article",
