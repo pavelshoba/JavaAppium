@@ -6,8 +6,8 @@ import lib.ui.MainPageObject;
 import lib.ui.SearchPageObject;
 import lib.ui.factories.ArticlePageObjectFactory;
 import lib.ui.factories.SearchPageObjectFactory;
+import org.junit.Assert;
 import org.junit.Test;
-import org.openqa.selenium.By;
 
 public class ArticleTests extends CoreTestCase
 {
@@ -22,7 +22,7 @@ public class ArticleTests extends CoreTestCase
         ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         String article_title = ArticlePageObject.getArticleTitle();
 
-        assertEquals(
+        Assert.assertEquals(
                 "We see unexpected title",
                 "Java (programming language)",
                 article_title
