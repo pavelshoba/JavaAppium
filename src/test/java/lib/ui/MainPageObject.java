@@ -5,6 +5,7 @@ import io.appium.java_client.TouchAction;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
 import io.qameta.allure.Attachment;
+import io.qameta.allure.Step;
 import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.openqa.selenium.*;
@@ -246,6 +247,7 @@ public class MainPageObject {
         }
     }
 
+    @Step("Making assert for amount of elements")
     public void assertElementPresent(String locator, String error_message) {
         int amount_of_elements = getAmountOfElements(locator);
         if (amount_of_elements > 0) {

@@ -1,6 +1,7 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import io.qameta.allure.Step;
 import lib.Platform;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -13,17 +14,19 @@ abstract public class MyListsPageObject extends MainPageObject{
         SAVED_ARTICLE;
 
 
-
+    @Step("Getting name of folder:'{name_of_folder}'")
     private static String getFolderXpathByName(String name_of_folder)
     {
         return FOLDER_BY_NAME_TPL.replace("{FOLDER_NAME}", name_of_folder);
     }
 
+    @Step("Getting article title:'{article_title}'")
     private static String getSavedArticleXpathByTitle(String article_title)
     {
         return ARTICLE_BY_TITLE_TPL.replace("{TITLE}", article_title);
     }
 
+    @Step("Getting article title:'{article_title}'")
     private static String getRemoveButtonByTitle(String article_title)
     {
         return REMOVE_FROM_SAVED_BUTTON.replace("{TITLE}", article_title);
@@ -34,6 +37,7 @@ abstract public class MyListsPageObject extends MainPageObject{
         super(driver);
     }
 
+    @Step("Opening folder with name:'{name_of_folder}'")
     public void openFolderByName(String name_of_folder)
     {
         String folder_name_xpath = getFolderXpathByName(name_of_folder);
@@ -44,18 +48,21 @@ abstract public class MyListsPageObject extends MainPageObject{
         );
     }
 
+    @Step("Waiting while article to appear by title")
     public void waitForArticleToAppearByTitle(String article_title)
     {
         String article_xpath = getSavedArticleXpathByTitle(article_title);
         this.waitForElementPresent(article_xpath, "Cannot find saved article by title " + article_title, 15);
     }
 
+    @Step("Waiting while article to disappear by title")
     public void waitForArticleToDisappearByTitle(String article_title)
     {
         String article_xpath = getSavedArticleXpathByTitle(article_title);
         this.waitForElementNotPresent(article_xpath, "Saved article still present with title " + article_title, 15);
     }
 
+    @Step("Making swipe to delete article")
     public void swipeByArticleToDelete(String article_title)
     {
         this.waitForArticleToAppearByTitle(article_title);
@@ -86,6 +93,7 @@ abstract public class MyListsPageObject extends MainPageObject{
         this.waitForArticleToDisappearByTitle(article_title);
     }
 
+    @Step("Opening saved article")
     public void openSavedArticle()
     {
         this.waitForElementAndClick(

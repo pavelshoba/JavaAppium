@@ -156,7 +156,7 @@ abstract public class ArticlePageObject extends MainPageObject
         this.waitForElementAndClick(OPTIONS_ADD_TO_MY_LIST_BUTTON, "Cannot find option to add article to reading list", 5);
     }
 
-    @Step("Removing the article frim saved if it has been added")
+    @Step("Removing the article from saved if it has been added")
     public void removeArticleFromSavedIfItAdded()
     {
         if (this.isElementPresent(OPTIONS_REMOVE_FROM_MY_LIST_BUTTON)) {
